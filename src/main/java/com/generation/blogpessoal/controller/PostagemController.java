@@ -42,24 +42,29 @@ public class PostagemController {
 
     @PostMapping
     public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem postagem) {
-        if (temaRepository.existsById(postagem.getTema().getId()))
+        //if (temaRepository.existsById(postagem.getTema().getId()))
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(postagemRepository.save(postagem));
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
 
     @PutMapping
     public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem postagem) {
-        if (postagemRepository.existsById(postagem.getId())){
+       /* if (postagemRepository.existsById(postagem.getId())){
             if (temaRepository.existsById(postagem.getTema().getId()))
                 return ResponseEntity.status(HttpStatus.OK)
                         .body(postagemRepository.save(postagem));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();*/
 
-    }
+            return postagemRepository.findById(postagem.getId())
+                    .map(resposta-> ResponseEntity.status(HttpStatus.OK)
+                    .body(postagemRepository.save(postagem)))
+            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        }
+        //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
