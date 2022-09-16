@@ -1,6 +1,7 @@
 package com.generation.blogpessoal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_usuarios" )
+
 public class Usuario {
 
     @Id
@@ -18,8 +20,9 @@ public class Usuario {
     private Long id;
     @NotNull
     private String nome;
-    @NotNull
-    @Email
+    @Schema(example = "email@email.com.br")
+    @NotNull(message = "O Atributo Usuário é obrigatório!")
+    @Email(message = "O atributo usuário deve ser um email válido!")
     private String usuario;
     @NotBlank
     @Size(min = 8, message = "A senha deve ter no minimo 8 caracteres")
